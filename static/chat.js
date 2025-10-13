@@ -5,9 +5,16 @@ socket.on("connect", () => {
 });
 
 function randomString(length) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = "";
 
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
 }
 
 function doesCookieExistOrNot(cookieName, howmanydays, value) {
@@ -30,7 +37,6 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
     console.log(`DEBUG: Cookie "${cookieName}" created with value: ${value}`);
   }
 }
-
 
 socket.on(
   "message",
