@@ -17,7 +17,10 @@ socket.on(
         console.log('DEBUG: Message received:', msg);
         
         const messages = document.getElementById('messages');
-        
+        const item = document.createElement('li');
+
+        item.textContent = msg;
+        messages.appendChild(item);
 
     }
 )
