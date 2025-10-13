@@ -27,5 +27,11 @@ socket.on(
 )
 
 function sendMessage() {
+    
+    const input = document.getElementById('msg');
+    const message = input.value;
+
+    socket.send(message);
+    input.value = '';
 
 }
