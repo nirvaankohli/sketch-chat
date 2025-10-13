@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_socketio import SocketIO, send
-from pythondotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 
 load_dotenv()
@@ -14,7 +14,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @app.route("/", methods=["GET"])
 def home():
 
-    return "Welcome to chatting app thing!"
+    return render_template("index.html")
+
 
 @socketio.on("message")
 def handle_message(msg):
@@ -25,5 +26,4 @@ def handle_message(msg):
 
 if __name__ == "__main__":
 
-    43
     socketio.run(app, debug=True)
