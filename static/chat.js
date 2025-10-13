@@ -23,4 +23,9 @@ socket.on(
         messages.appendChild(item);
 
     }
+
 )
+
+function sendMessage() {
+
+}
