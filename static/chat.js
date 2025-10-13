@@ -1,5 +1,31 @@
 const socket = io();
 
+function getCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(";");
+    
+    for (let i = 0; i < cookieArray.length; i++) {
+
+        let cookie = cookieArray[i];
+
+        while (cookie.charAt(0) === " ") {
+
+            cookie = cookie.substring(1);
+
+        }
+
+        if (cookie.indexOf(name) === 0) {
+
+            return cookie.substring(name.length, cookie.length);
+        
+        }
+
+    }
+    
+    return "";
+}
+
 socket.on("connect", () => {
   console.log("DEBUG: Connected to server 🔌");
 });
@@ -11,7 +37,7 @@ function randomString(length) {
   let result = "";
 
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * length));
   }
 
   return result;
@@ -59,7 +85,9 @@ function sendMessage() {
   const input = document.getElementById("msg");
   const message = input.value;
 
-  socket.send(doesCookieExistOrNot("userId", 365, randomString(16)) + ": " + message);
+  socket.send(
+    doesCookieExistOrNot("userId", 365, randomString(16)) + ": " + message
+  );
   input.value = "";
 }
 
