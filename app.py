@@ -16,7 +16,13 @@ def home():
 
     return "Welcome to chatting app thing!"
 
+@socketio.on("message")
+def handle_message(msg):
+
+    print("Ts is Message 📨 " + msg)
+    send(msg, broadcast=True)
+
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    socketio.run(app, debug=True)
