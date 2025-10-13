@@ -4,6 +4,12 @@ socket.on("connect", () => {
   console.log("DEBUG: Connected to server 🔌");
 });
 
+function randomString(length) {
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+}
+
 function doesCookieExistOrNot(cookieName, howmanydays, value) {
   if (!getCookie(cookieName)) {
     // REMOVE LATER
@@ -13,16 +19,18 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
     );
 
     const d = new Date();
-    
-    d.setTime(d.getTime() + (howmanydays * 24 * 60 * 60 * 1000));
-    
+
+    d.setTime(d.getTime() + howmanydays * 24 * 60 * 60 * 1000);
+
     const expires = "expires=" + d.toUTCString();
-    
+
     document.cookie = cookieName + "=" + value + ";" + expires + ";path=/";
+    // REMOVE LATER
 
-
+    console.log(`DEBUG: Cookie "${cookieName}" created with value: ${value}`);
   }
 }
+
 
 socket.on(
   "message",
@@ -46,3 +54,5 @@ function sendMessage() {
   socket.send(message);
   input.value = "";
 }
+
+doesCookieExistOrNot("user_id", 365, "user_" + randomString(10));
