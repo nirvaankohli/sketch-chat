@@ -5,4 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sketch Chat</title>
     <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Flask Chat App 💬</h1>
+    <ul id="messages"></ul> <!-- Where the messages will be fed into and displayed ts ts -->
+    <input id="msg" autocomplete="off" placeholder="Type ts message here..."><button onclick="sendMessage()">Send</button>
+    
+    <!-- where the acc things happen: -->
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="/static/chat.js"></script>
+
+</body>
+
 </html>
