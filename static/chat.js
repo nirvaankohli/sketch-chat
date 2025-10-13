@@ -36,6 +36,8 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
 
     console.log(`DEBUG: Cookie "${cookieName}" created with value: ${value}`);
   }
+
+  return getCookie(cookieName);
 }
 
 socket.on(
@@ -57,8 +59,8 @@ function sendMessage() {
   const input = document.getElementById("msg");
   const message = input.value;
 
-  socket.send(message);
+  socket.send(doesCookieExistOrNot("userId", 365, randomString(16)) + ": " + message);
   input.value = "";
 }
 
-doesCookieExistOrNot("user_id", 365, "user_" + randomString(10));
+const userId = doesCookieExistOrNot("userId", 365, randomString(16));
