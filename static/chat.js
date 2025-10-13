@@ -15,6 +15,9 @@ socket.on(
 
         // REMOVE LATER
         console.log('DEBUG: Message received:', msg);
+        
+        const messages = document.getElementById('messages');
+        
 
     }
 )
