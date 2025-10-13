@@ -4,6 +4,10 @@ socket.on("connect", () => {
   console.log("DEBUG: Connected to server 🔌");
 });
 
+function doesCookieExistOrNot(cookieName) {
+    
+}
+
 socket.on(
   "message",
 
