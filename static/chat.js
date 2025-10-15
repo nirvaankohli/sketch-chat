@@ -158,6 +158,7 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
 window.doesCookieExistOrNot = doesCookieExistOrNot;
 
 socket.on("message", (msg) => {
+    
   const messages = document.getElementById("messages");
   const item = document.createElement("li");
 
