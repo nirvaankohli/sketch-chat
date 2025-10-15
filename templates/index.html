@@ -3,20 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sketch Chat</title>
-    <link rel="stylesheet" href="/static/styles.css" />
+    <title>Morse Code Chat</title>
+    <link rel="stylesheet" href="\static\styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send"
+    />
   </head>
   <body>
-    <h1>Flask Chat App 💬</h1>
-    <ul id="messages"></ul>
-    <!-- Where the messages will be fed into and displayed ts ts -->
-    <input
-      id="msg"
-      autocomplete="off"
-      placeholder="Type ts message here..."
-    /><button onclick="sendMessage()">Send</button>
+    <div class="container">
+      <div id="main">
+        <div class="header">
+          <h1>Morse Code Chat</h1>
+          <div class="header-right" onclick="MaskUserId()">Dev Mode</div>
+        </div>
 
-    <!-- where the acc things happen: -->
+        <div class="chat-area">
+          <ul id="messages"></ul>
+        </div>
+
+        <div class="controls">
+          <textarea
+            id="msg"
+            autocomplete="off"
+            placeholder="Type a message here..."
+          ></textarea>
+          <button onclick="sendMessage()">↪</button>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="/static/chat.js"></script>
