@@ -4,22 +4,33 @@
     <title>Morse Code Example</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="stylesheet" href="../static/example_translator.css" />
   </head>
 
   <body>
-    <h1>Morse Code Translator Example</h1>
+    <h1 class="header-big">Morse Code Translator Example</h1>
     <p>This is a simple example of Morse code translation.</p>
 
-    <h3>Input English Text</h3>
-    <textarea
-      id="inputText"
-      rows="4"
-      cols="50"
-      placeholder="Type your message here..."
-    ></textarea>
+    <div class="container-label">
+      <h3>Input Text</h3>
+      <h3>
+        Translated <br />
+        Morse Code
+      </h3>
+    </div>
 
-    <h3>Translated Morse Code</h3>
-    <textarea id="morseCode" rows="4" cols="50" readonly></textarea>
+    <div class="container">
+      <textarea
+        id="inputText"
+        rows="4"
+        cols="50"
+        placeholder="Type your message here..."
+      ></textarea>
+
+      <textarea id="morseCode" rows="4" cols="50" readonly></textarea>
+    </div>
+
+    <button class="translate" onclick="translateToMorse()">Translate</button>
+    <script src="../static/translator.js"></script>
   </body>
 </html>

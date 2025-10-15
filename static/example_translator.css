@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=BBH+Sans+Bartle&display=swap");
+
+/* Copy & pasted from styles.css */
+
 :root {
   /* Surface thingys */
-
   --bg: #0b0f14; /* app background */
   --bg-muted: #0f1419; /* slightly lighter */
   --surface: #0e1216; /* main container */
@@ -27,8 +29,133 @@
   --radius-lg: 20px;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Arimo", sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: "BBH Sans Bartle", sans-serif;
+  font-size: 2.2em;
+  margin-bottom: 12px;
+}
+
+.input-label {
+  margin-bottom: 10px;
+}
+
+.translate {
+  position: relative;
+  background: var(--accent-400);
+  border: none;
+  border-radius: 2000px;
+  color: white;
+  cursor: pointer;
+  font-size: 250%;
+  padding: 10px 16px;
+  transition: all 1s ease-in-out;
+  aspect-ratio: 6 / 1;
+  max-height: 100px;
+  width: 40%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.translate:hover {
+  margin-top: 25px;
+  scale: 1.25;
+  border: var(--accent-400) solid 2px;
+  font-size: 200%;
+  background: var(--bg);
+}
+
+h3 {
+  font-family: "BBH Sans Bartle", sans-serif;
+  font-size: 1.5vw;
+  margin-bottom: 10px;
+}
+
+.container-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 4vw;
+  margin-bottom: 6px;
+}
+
+.header-big {
+  width: 100%;
+  max-width: 1000px;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: 18px;
+}
 
 #morseCode {
-  font-family: "Courier New", Courier, monospace;
   letter-spacing: 0.3em;
+  font-size: 1.2em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 60vw;
+  gap: 20px;
+}
+
+.input-area,
+.output-area {
+  flex: 1;
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  min-height: 200px;
+}
+
+textarea,
+input[type="text"] {
+  height: 100%;
+  width: 80%;
+  justify-content: space-evenly;
+  background: var(--surface);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .container,
+  .container-label {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    flex-direction: row;
+  }
+
+  .input-area,
+  .output-area {
+    width: 50%;
+  }
 }
