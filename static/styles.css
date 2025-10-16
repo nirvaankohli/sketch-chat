@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=BBH+Sans+Bartle&display=swap");Code has comments. Press enter to view.
+:root {
+  /* Surface thingys */
+
+  --bg: #0b0f14; /* app background */
+  --bg-muted: #0f1419; /* slightly lighter */
+  --surface: #0e1216; /* main container */
+  --card: #11161b; /* message bubble */
+
+  /* Text */
+  --text-primary: #e6eef8;
+  --text-secondary: #a3b1c2;
+  --text-faint: #6f7b86;
+
+  /* Accent */
+  --accent-500: #873cff;
+  --accent-400: #3300aa;
+
+  /* Borders / shadows */
+  --border-1: rgba(255, 255, 255, 0.04);
+  --shadow-1: rgba(2, 6, 23, 0.6);
+  --overlay-1: rgba(255, 255, 255, 0.02);
+
+  /* Sizes */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: "Arimo", sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+.container {
+  width: 100%;
+  height: 92vh;
+  max-width: 1100px;
+  background: linear-gradient(
+    180deg,
+    var(--surface),
+    rgba(255, 255, 255, 0.01)
+  );
+  border-radius: 14px;
+  display: flex;
+  gap: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border-1);
+  box-shadow: 0 18px 40px var(--shadow-1);
+}
+
+#main {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-1);
+  height: 10%;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 14, 20, 0.6),
+    rgba(12, 18, 28, 0.6)
+  );
+  color: var(--text-primary);
+}
+
+.header h1 {
+  font-family: "BBH Sans Bartle", sans-serif;
+  font-size: clamp(10px, 4.5vw, 53px);
+  font-weight: 600;
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+#messages {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+#messages li {
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  max-width: 72%;
+  width: fit-content;
+  min-width: 35%;
+  border-radius: 200px;
+  border: 1px solid var(--border-1);
+  color: var(--text-primary);
+  font-size: 14px;
+  word-break: break-word;
+  box-shadow: 0 6px 18px var(--shadow-1);
+}
+
+.message-text {
+  font-size: 25px;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+.message-sender {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-faint);
+  opacity: 0.9;
+}
+
+.msg--me {
+  text-align: right;
+  background-color: var(--accent-400);
+  margin-left: auto;
+  color: var(--accent-400);
+  border: none;
+  box-shadow: 0 8px 24px var(--shadow-1);
+}
+.msg--other {
+  text-align: left;
+  margin-right: auto;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.header-right:hover {
+  opacity: 0.8;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  height: 15%;
+  font: 30px "Arimo", sans-serif;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-1);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 14, 20, 0.6),
+    rgba(6, 10, 14, 0.6)
+  );
+  align-items: center;
+}
+
+#msg {
+  font: 30px "Arimo", sans-serif;
+  text-align: left;
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-1);
+  height: 80%;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+  outline: none;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+button {
+  font-size: 100%;
+  padding: 10px 16px;
+  border-radius: 150px;
+  width: 7%;
+  aspect-ratio: 1 / 1;
+  border: none;
+  background-color: var(--accent-400);
+
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px var(--shadow-1);
+  transition: background-color 2s ease, all 0.5s ease;
+}
+
+button:hover {
+  background-color: var(--card);
+  opacity: 0.98;
+  scale: 1.1;
+  font-size: 78%;
+}
+
+.send-icon {
+  scale: 1.7;
+  font-size: 5vw;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+button:hover {
+  opacity: 0.98;
+}
+#msg:focus {
+  box-shadow: 0 8px 24px rgba(122, 160, 255, 0.06);
+  border-color: rgba(122, 160, 255, 0.12);
+}
+
+#messages::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+#messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.08)
+  );
+  border-radius: 10px;
+}
+
+@media (max-width: 720px) {
+  .container {
+    flex-direction: column;
+    height: 100vh;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  #messages li {
+    max-width: 92%;
+  }
+}
