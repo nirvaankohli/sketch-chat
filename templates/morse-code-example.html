@@ -11,12 +11,9 @@
     <h1 class="header-big">Morse Code Translator Example</h1>
     <p>This is a simple example of Morse code translation.</p>
 
-    <div class="container-label">
-      <h3>Input Text</h3>
-      <h3>
-        Translated <br />
-        Morse Code
-      </h3>
+    <div class="container-label" id="container-label">
+      <h3 id="englishLabel">English</h3>
+      <h3 id="morseCodeLabel">Morse Code</h3>
     </div>
 
     <div class="container">
@@ -30,7 +27,7 @@
       <textarea id="morseCode" rows="4" cols="50" readonly></textarea>
     </div>
 
-    <button class="translate" onclick="translateToMorse()">Translate</button>
+    <button class="switch" onclick="switchTranslation()">Switch</button>
     <script src="../static/translator.js"></script>
   </body>
 </html>
