@@ -19,7 +19,11 @@ function getCookie(cookieName) {
 
   return "";
 }
+
+const inputField = document.getElementById("msg");
 window.getCookie = getCookie;
+
+allowedChars = ["-", ".", " ", "/"];
 
 socket.on("connect", () => {
   console.log("DEBUG: Connected to server 🔌");
@@ -158,9 +162,10 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
 window.doesCookieExistOrNot = doesCookieExistOrNot;
 
 socket.on("message", (msg) => {
-    
   const messages = document.getElementById("messages");
   const item = document.createElement("li");
+
+  console.log("DEBUG: Received message:", msg);
 
   const parts = msg.split(": ");
   const senderId = parts.shift();
@@ -197,6 +202,8 @@ function sendMessage() {
   const input = document.getElementById("msg");
   const message = input.value.trim();
 
+  console.log("DEBUG: Sending message:", message);
+
   if (!message) return; // Don't send empty messages
 
   let senderId = null;
@@ -232,5 +239,11 @@ document.getElementById("msg").addEventListener("keypress", function (e) {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
+  } else if (!allowedChars.includes(e.key)) {
+    e.preventDefault();
   }
 });
+
+function inputKeyboard(char) {
+  inputField.value += char;
+}
