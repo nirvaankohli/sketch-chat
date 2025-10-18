@@ -206,6 +206,12 @@ def api_text_to_morse():
     return jsonify({"morse_code": morse_code}), 200
 
 
+@socketio.on("message")
+def handle_message(msg):
+    print(f"Received message: {msg}")
+    send(msg, broadcast=True)
+
+
 if __name__ == "__main__":
 
     socketio.run(app, debug=True)

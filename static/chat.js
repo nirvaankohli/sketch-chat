@@ -1,5 +1,7 @@
 const socket = io();
 
+//font-size adjustment
+
 function getCookie(cookieName) {
   const name = cookieName + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
@@ -178,19 +180,23 @@ socket.on("message", (msg) => {
   const messageTextElement = document.createElement("div");
   messageTextElement.className = "message-text";
   messageTextElement.textContent = messageText;
+  messageTextElement.style.fontSize =
+    100 / Math.max(messageText.length / 20, 5) + 5 + "px";
 
   const senderElement = document.createElement("div");
   senderElement.className = "message-sender";
   senderElement.textContent = displayName;
 
   item.appendChild(messageTextElement);
-  messages.appendChild(senderElement);
+  item.appendChild(senderElement);
   item.title = senderId;
 
   if (window.userId === senderId) {
     item.className = "msg--me";
+    senderElement.className += " text--me";
   } else {
     item.className = "msg--other";
+    senderElement.className += " text--other";
   }
 
   messages.appendChild(item);
