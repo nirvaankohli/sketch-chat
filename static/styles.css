@@ -296,6 +296,64 @@ button:hover {
   border-radius: 10px;
 }
 
+.switch-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  height: 6%;
+  margin-bottom: 10px;
+}
+
+.switch {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  content: "";
+  height: 85%;
+  top: 7.5%;
+  left: 7%;
+  aspect-ratio: 1 / 1;
+  position: absolute;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-400);
+}
+
+input:checked + .slider:before {
+  transform: translateX(100%);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 @media (max-width: 720px) {
   .container {
     flex-direction: column;
