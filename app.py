@@ -1,4 +1,3 @@
-from cgitb import text
 from flask import Flask, jsonify, request, render_template
 from flask_socketio import SocketIO, send
 from dotenv import load_dotenv
