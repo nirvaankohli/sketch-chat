@@ -119,6 +119,8 @@ def text_to_morse(text):
 @app.route("/", methods=["GET"])
 def home():
 
+    # Home Morse Code Chat
+
     return render_template("index.html")
 
 
@@ -149,7 +151,11 @@ def api_morse_to_text():
     """
 
     data = request.get_json()
-    morse_code = data.get("morse_code", "").strip()
+    print(f"Received Data: {data}")
+
+    morse_code = data["morse"].strip()
+
+    print(f"Received morse_code: {morse_code}")
 
     if not morse_code:
 
@@ -167,13 +173,14 @@ def api_morse_to_text():
         return (jsonify({"error": "Invalid Morse Code"}), 400)
 
     text = morse_to_text(morse_code)
+    print(f"Decoded text: {text}")
     return jsonify({"text": text}), 200
 
 
 @app.route("/api/v1/text-to-morse", methods=["POST"])
 def api_text_to_morse():
     r""" 
-
+    
     Curl Example:
 
     curl -X POST http://<website_url>/api/v1/text-to-morse \
@@ -185,7 +192,7 @@ def api_text_to_morse():
     """
 
     data = request.get_json()
-    text = data.get("text", "").strip()
+    text = data["text"].strip()
 
     if not text:
 
@@ -203,11 +210,13 @@ def api_text_to_morse():
         return jsonify({"error": "Invalid Text"}), 400
 
     morse_code = text_to_morse(text)
+
     return jsonify({"morse_code": morse_code}), 200
 
 
 @socketio.on("message")
 def handle_message(msg):
+
     print(f"Received message: {msg}")
     send(msg, broadcast=True)
 

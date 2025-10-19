@@ -1,6 +1,5 @@
 const socket = io();
 
-//font-size adjustment
 
 function getCookie(cookieName) {
   const name = cookieName + "=";
@@ -27,9 +26,7 @@ window.getCookie = getCookie;
 
 allowedChars = ["-", ".", " ", "/"];
 
-socket.on("connect", () => {
-  console.log("DEBUG: Connected to server 🔌");
-});
+
 
 function randomString(length) {
   const characters =
@@ -53,7 +50,7 @@ function maskUserId() {
     window._tabUserId = newId;
   }
   window.userId = newId;
-  console.log(`DEBUG: Masked (tab-only) userId -> ${newId}`);
+  // // console.log(`DEBUG: Masked (tab-only) userId -> ${newId}`);
 }
 
 window.maskUserId = maskUserId;
@@ -70,18 +67,16 @@ function clearTabUserId() {
 
   window.userId = cookieId;
 
-  console.log(
-    "DEBUG: Cleared tab user id, now using cookie userId ->",
-    cookieId
-  );
+  // console.log(
+  //   "DEBUG: Cleared tab user id, now using cookie userId ->",
+  //   cookieId
+  // );
 }
 
 window.clearTabUserId = clearTabUserId;
 
 window.randomString = randomString;
 
-// ---------- friendly name mapping ----------
-// Load adjective and noun lists from static files and build a deterministic mapping
 window._adjectives = [];
 window._nouns = [];
 
@@ -102,11 +97,11 @@ async function loadWordLists() {
       window._nouns = text.split(/\r?\n/).filter(Boolean);
     }
 
-    console.log(
-      "DEBUG: Word lists loaded",
-      window._adjectives.length,
-      window._nouns.length
-    );
+    // console.log(
+    //   "DEBUG: Word lists loaded",
+    //   window._adjectives.length,
+    //   window._nouns.length
+    // );
   } catch (e) {
     console.warn("Could not load word lists for display names", e);
   }
@@ -142,10 +137,9 @@ loadWordLists();
 
 function doesCookieExistOrNot(cookieName, howmanydays, value) {
   if (!getCookie(cookieName)) {
-    // REMOVE LATER
-    console.log(
-      `DEBUG: Cookie "${cookieName}" does not exist. Creating a new one...`
-    );
+    // // console.log(
+    //   `DEBUG: Cookie "${cookieName}" does not exist. Creating a new one...`
+    // );
 
     const d = new Date();
 
@@ -156,7 +150,7 @@ function doesCookieExistOrNot(cookieName, howmanydays, value) {
     document.cookie =
       cookieName + "=" + value + ";" + expires + ";path=/;SameSite=Strict";
 
-    console.log(`DEBUG: Cookie "${cookieName}" created with value: ${value}`);
+    // console.log(`DEBUG: Cookie "${cookieName}" created with value: ${value}`);
   }
 
   return getCookie(cookieName);
@@ -166,28 +160,65 @@ window.doesCookieExistOrNot = doesCookieExistOrNot;
 socket.on("message", (msg) => {
   const messages = document.getElementById("messages");
   const item = document.createElement("li");
+  // console.log("DEBUG: Received message:", msg);
 
-  console.log("DEBUG: Received message:", msg);
+  if (!window.messageTranslations) {
+    window.messageTranslations = new Map();
+  }
 
   const parts = msg.split(": ");
   const senderId = parts.shift();
   const messageText = parts.join(": ");
-
   const displayName = window.getDisplayName
     ? window.getDisplayName(senderId)
     : senderId;
 
+  const messageId = Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+  window.messageTranslations.set(messageId, {
+    morse: messageText,
+    translated: null,
+  });
+
   const messageTextElement = document.createElement("div");
   messageTextElement.className = "message-text";
+  messageTextElement.setAttribute("data-message-id", messageId);
   messageTextElement.textContent = messageText;
   messageTextElement.style.fontSize =
     100 / Math.max(messageText.length / 20, 5) + 5 + "px";
+  item.appendChild(messageTextElement);
+
+  const translationEnabled = document.getElementById("checkbox")?.checked;
+
+  if (translationEnabled) {
+    translateMessage(messageId, messageTextElement);
+  }
+
+  async function translateMessage(msgId, element) {
+    const messageData = window.messageTranslations.get(msgId);
+    if (!messageData || messageData.translated) return;
+
+    try {
+      const response = await fetch("/api/v1/morse-to-text", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ morse: messageData.morse }),
+      });
+      const data = await response.json();
+
+      if (data.text) {
+        messageData.translated = data.text;
+        if (document.getElementById("checkbox").checked) {
+          element.textContent = data.text;
+        }
+      }
+    } catch (error) {
+      console.error("Translation failed for message:", msgId);
+    }
+  }
 
   const senderElement = document.createElement("div");
   senderElement.className = "message-sender";
   senderElement.textContent = displayName;
-
-  item.appendChild(messageTextElement);
   item.appendChild(senderElement);
   item.title = senderId;
 
@@ -200,7 +231,6 @@ socket.on("message", (msg) => {
   }
 
   messages.appendChild(item);
-
   messages.scrollTop = messages.scrollHeight;
 });
 
@@ -208,10 +238,9 @@ function sendMessage() {
   const input = document.getElementById("msg");
   const message = input.value.trim();
 
-  console.log("DEBUG: Sending message:", message);
+  // console.log("DEBUG: Sending message:", message);
 
-  if (!message) return; // Don't send empty messages
-
+  if (!message) return;
   let senderId = null;
   try {
     senderId = sessionStorage.getItem("tabUserId");
@@ -253,3 +282,43 @@ document.getElementById("msg").addEventListener("keypress", function (e) {
 function inputKeyboard(char) {
   inputField.value += char;
 }
+
+const toggleTranslation = document.getElementById("checkbox");
+
+toggleTranslation.addEventListener("change", async function () {
+  const messages = document.getElementById("messages");
+  for (var i = 0; i < messages.children.length; i++) {
+    const item = messages.children[i];
+    const messageTextDiv = item.querySelector(".message-text");
+    if (!messageTextDiv) continue;
+
+    const messageId = messageTextDiv.getAttribute("data-message-id");
+    if (!messageId) continue;
+
+    const messageData = window.messageTranslations.get(messageId);
+    if (!messageData) continue;
+
+    if (this.checked) {
+      if (messageData.translated) {
+        messageTextDiv.textContent = messageData.translated;
+      } else {
+        try {
+          const response = await fetch("/api/v1/morse-to-text", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ morse: messageData.morse }),
+          });
+          const data = await response.json();
+          if (data.text) {
+            messageData.translated = data.text;
+            messageTextDiv.textContent = data.text;
+          }
+        } catch (error) {
+          console.error("Translation failed:", error);
+        }
+      }
+    } else {
+      messageTextDiv.textContent = messageData.morse;
+    }
+  }
+});
