@@ -79,17 +79,21 @@ def contains_only_allowed_chars(string, allowed_chars):
 
 def morse_to_text(morse_code):
 
-    words = morse_code.split(" / ")
+    morse_code = morse_code.strip()
+
+    words = [word.strip() for word in morse_code.split("/")]
 
     decoded_message = ""
 
     for word in words:
+        if not word: 
+            continue
 
-        letters = word.split(" ")
+        letters = [letter.strip() for letter in word.split()]
 
         for letter in letters:
-
-            decoded_message += reverse_morse_code_map.get(letter, "")
+            if letter: 
+                decoded_message += reverse_morse_code_map.get(letter, "")
 
         decoded_message += " "
 
@@ -97,28 +101,26 @@ def morse_to_text(morse_code):
 
 
 def text_to_morse(text):
-
     text = text.lower().strip()
-
-    words = text.split(" ")
-
-    morse_code = "'"
+    words = text.split()
+    morse_words = []
 
     for word in words:
-
+        morse_letters = []
         for letter in word:
+            morse = morse_code_map.get(letter, "")
+            if morse:
+                morse_letters.append(morse)
 
-            morse_code += morse_code_map.get(letter, "") + " "
+        if morse_letters:
+            morse_words.append(" ".join(morse_letters))
 
-    morse_code += "/ "
-
-    return morse_code.strip()
+    return " / ".join(morse_words)
 
 
 @app.route("/", methods=["GET"])
 def home():
 
-    # Home Morse Code Chat
 
     return render_template("index.html")
 
@@ -137,43 +139,33 @@ def health_check():
 
 @app.route("/api/v1/morse-to-text", methods=["POST"])
 def api_morse_to_text():
-    r""" 
+    """Translate Morse code to text.
 
-    Curl Example:
-
-    curl -X POST http://<website_url>/api/v1/morse-to-text \
-        -H "Content-Type: application/json" \
-        -d '{"morse_code": "... --- ..."}'
-
-    Morse Code can only contain the following characters: . - / (space)
-
+    Expects JSON input with 'morse' key containing Morse code.
+    Returns JSON with 'text' key containing translated text.
     """
+    try:
+        data = request.get_json()
 
-    data = request.get_json()
-    print(f"Received Data: {data}")
+        if not data or "morse" not in data:
+            return jsonify({"error": "Missing morse code data"}), 400
 
-    morse_code = data["morse"].strip()
+        morse_code = data["morse"].strip()
 
-    print(f"Received morse_code: {morse_code}")
+        if not morse_code:
+            return jsonify({"error": "Empty morse code"}), 400
 
-    if not morse_code:
+        if not contains_only_allowed_chars(morse_code, morse_code_allowed):
+            return jsonify({"error": "Invalid characters in Morse code"}), 400
 
-        return (
-            jsonify(
-                {
-                    "error": "Morse Code is required. We do not accept empty values(You didn't supply the morse code data)."
-                }
-            ),
-            400,
-        )
+        text = morse_to_text(morse_code)
+        if not text:
+            return jsonify({"error": "Could not translate Morse code"}), 400
 
-    if not contains_only_allowed_chars(morse_code, morse_code_allowed):
+        return jsonify({"text": text}), 200
 
-        return (jsonify({"error": "Invalid Morse Code"}), 400)
-
-    text = morse_to_text(morse_code)
-    print(f"Decoded text: {text}")
-    return jsonify({"text": text}), 200
+    except Exception as e:
+        return jsonify({"error": "Server error while processing request"}), 500
 
 
 @app.route("/api/v1/text-to-morse", methods=["POST"])
