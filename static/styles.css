@@ -308,6 +308,15 @@ button:hover {
   gap: 5px;
 }
 
+.footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 16px;
+  color: #3300aa;
+  cursor: pointer;
+  font-family: "BBH Sans Bartle", sans-serif;
+}
+
 .toggle-header {
   gap: 10px;
   height: 4%;
