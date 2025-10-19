@@ -86,13 +86,13 @@ def morse_to_text(morse_code):
     decoded_message = ""
 
     for word in words:
-        if not word: 
+        if not word:
             continue
 
         letters = [letter.strip() for letter in word.split()]
 
         for letter in letters:
-            if letter: 
+            if letter:
                 decoded_message += reverse_morse_code_map.get(letter, "")
 
         decoded_message += " "
@@ -120,7 +120,6 @@ def text_to_morse(text):
 
 @app.route("/", methods=["GET"])
 def home():
-
 
     return render_template("index.html")
 
@@ -213,5 +212,8 @@ def handle_message(msg):
 
 
 if __name__ == "__main__":
-
     socketio.run(app, debug=True)
+else:
+    socketio = SocketIO(
+        app, async_mode="eventlet", cors_allowed_origins="*", ping_timeout=30
+    )
