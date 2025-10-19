@@ -1,5 +1,7 @@
 # Morse Code Chat
 
+![alt text](image.png)
+
 A real-time chat application with Morse code translation capabilities built with Flask and Socket.IO.
 
 ## Features
