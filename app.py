@@ -5,6 +5,7 @@ eventlet.monkey_patch()
 
 from flask import Flask, jsonify, request, render_template
 from flask_socketio import SocketIO, send
+from werkzeug.middleware.proxy_fix import ProxyFix
 from dotenv import load_dotenv
 
 morse_code_map = {
@@ -65,6 +66,11 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "default-secret-key")
+app.config["PROXY_FIX"] = True
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1
+)
+
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
@@ -74,6 +80,9 @@ socketio = SocketIO(
     manage_session=True,
     logger=True,
     engineio_logger=True,
+    path="socket.io",  
+    always_connect=True,  
+    cookie=None,  
 )
 
 
