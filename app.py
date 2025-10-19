@@ -1,6 +1,13 @@
 from flask import Flask, jsonify, request, render_template
 from flask_socketio import SocketIO, send
 from dotenv import load_dotenv
+
+import eventlet
+eventlet.monkey_patch()
+
+from flask import Flask
+from flask_socketio import SocketIO
+
 import os
 
 morse_code_map = {
